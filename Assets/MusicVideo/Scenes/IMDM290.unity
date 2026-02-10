@@ -325,7 +325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &600499334
 AudioSource:
   m_ObjectHideFlags: 0
@@ -457,10 +457,13 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.5775015, z: 0, w: 0.8163897}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0.5775015, z: 0, w: 0.8163897}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 70.55, z: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 70.55, z: 0}
 --- !u!1 &642704525
 GameObject:
@@ -480,6 +483,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+  m_IsActive: 0
   m_IsActive: 0
 --- !u!135 &642704526
 SphereCollider:
@@ -589,6 +593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+  m_IsActive: 0
   m_IsActive: 0
 --- !u!4 &716317232
 Transform:
@@ -799,6 +804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
+  m_IsActive: 0
   m_IsActive: 0
 --- !u!65 &811760113
 BoxCollider:
@@ -1076,7 +1082,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 84f4af78e458c41bf8388d44f6ae2ace, type: 3}
+  m_Resource: {fileID: 8300000, guid: edc300f4a74b4de4aa0a93cdb1d8f0fc, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1718,6 +1724,3 @@ SceneRoots:
   - {fileID: 642704529}
   - {fileID: 811760116}
   - {fileID: 1254700534}
-  - {fileID: 1288918703}
-  - {fileID: 1405021242}
-  - {fileID: 742305955}
