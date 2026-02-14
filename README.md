@@ -1,4 +1,3 @@
 # Happy Valentines Day!         ^_^ #
 
-
-![CMSC290-Image](https://github.com/user-attachments/assets/f2a30d3f-79b1-4de8-993f-b77d897be380)
+![CMSC290-Image](https://github.com/user-attachments/assets/7dd060f1-c8b6-4b9b-9c3d-3d96dcf60b6d)
