@@ -15,10 +15,8 @@ public class MediaPipeBodyTracker : MonoBehaviour
     [Header("Hand Data")]
     [SerializeField] private Vector3 leftHandPosition;
     [SerializeField] private bool leftHandPinch;
-    [SerializeField] private float leftThumbIndexDistance;
     [SerializeField] private Vector3 rightHandPosition;
     [SerializeField] private bool rightHandPinch;
-    [SerializeField] private float rightThumbIndexDistance;
 
     [Header("Body Data")]
     [SerializeField] private Vector3 torsoPosition;
@@ -52,8 +50,6 @@ public class MediaPipeBodyTracker : MonoBehaviour
     private Vector3 pendingHeadPosition;
     private bool pendingLeftPinch;
     private bool pendingRightPinch;
-    private float pendingLeftThumbIndexDistance;
-    private float pendingRightThumbIndexDistance;
     private bool leftHandTracked;
     private bool rightHandTracked;
     private bool poseTracked;
@@ -72,12 +68,8 @@ public class MediaPipeBodyTracker : MonoBehaviour
 
     public Vector3 LeftHandPosition => leftHandPosition;
     public bool LeftHandPinch => leftHandPinch;
-    public float LeftThumbIndexDistance => leftThumbIndexDistance;
-    public bool LeftHandTracked => leftHandVisible;
     public Vector3 RightHandPosition => rightHandPosition;
     public bool RightHandPinch => rightHandPinch;
-    public float RightThumbIndexDistance => rightThumbIndexDistance;
-    public bool RightHandTracked => rightHandVisible;
     public Vector3 TorsoPosition => torsoPosition;
     public Vector3 HeadPosition => headPosition;
 
@@ -194,14 +186,12 @@ public class MediaPipeBodyTracker : MonoBehaviour
                 {
                     leftHandPosition = pendingLeftHandPosition;
                     leftHandPinch = pendingLeftPinch;
-                    leftThumbIndexDistance = pendingLeftThumbIndexDistance;
                     leftHandVisible = true;
                 }
                 else
                 {
                     leftHandPosition = Vector3.zero;
                     leftHandPinch = false;
-                    leftThumbIndexDistance = 0f;
                     leftHandVisible = false;
                 }
 
@@ -214,14 +204,12 @@ public class MediaPipeBodyTracker : MonoBehaviour
                 {
                     rightHandPosition = pendingRightHandPosition;
                     rightHandPinch = pendingRightPinch;
-                    rightThumbIndexDistance = pendingRightThumbIndexDistance;
                     rightHandVisible = true;
                 }
                 else
                 {
                     rightHandPosition = Vector3.zero;
                     rightHandPinch = false;
-                    rightThumbIndexDistance = 0f;
                     rightHandVisible = false;
                 }
 
@@ -264,7 +252,6 @@ public class MediaPipeBodyTracker : MonoBehaviour
             {
                 leftHandTracked = true;
                 pendingLeftHandPosition = ToUnityVector(landmarkList.Landmark[0]);
-                pendingLeftThumbIndexDistance = GetThumbIndexDistance(landmarkList);
                 pendingLeftPinch = IsPinching(landmarkList);
             }
             else
@@ -272,7 +259,6 @@ public class MediaPipeBodyTracker : MonoBehaviour
                 leftHandTracked = false;
                 pendingLeftHandPosition = Vector3.zero;
                 pendingLeftPinch = false;
-                pendingLeftThumbIndexDistance = 0f;
             }
 
             leftDirty = true;
@@ -295,7 +281,6 @@ public class MediaPipeBodyTracker : MonoBehaviour
             {
                 rightHandTracked = true;
                 pendingRightHandPosition = ToUnityVector(landmarkList.Landmark[0]);
-                pendingRightThumbIndexDistance = GetThumbIndexDistance(landmarkList);
                 pendingRightPinch = IsPinching(landmarkList);
             }
             else
@@ -303,7 +288,6 @@ public class MediaPipeBodyTracker : MonoBehaviour
                 rightHandTracked = false;
                 pendingRightHandPosition = Vector3.zero;
                 pendingRightPinch = false;
-                pendingRightThumbIndexDistance = 0f;
             }
 
             rightDirty = true;
@@ -369,11 +353,16 @@ public class MediaPipeBodyTracker : MonoBehaviour
 
     private bool IsPinching(NormalizedLandmarkList landmarks)
     {
-        var distance = GetThumbIndexDistance(landmarks);
-        if (distance <= 0f)
+        if (landmarks.Landmark.Count <= 8)
         {
             return false;
         }
+
+        var thumbTip = landmarks.Landmark[4];
+        var indexTip = landmarks.Landmark[8];
+        var thumb = new Vector2(thumbTip.X, thumbTip.Y);
+        var index = new Vector2(indexTip.X, indexTip.Y);
+        var distance = Vector2.Distance(thumb, index);
 
         if (distance > pinchThreshold)
         {
@@ -382,9 +371,7 @@ public class MediaPipeBodyTracker : MonoBehaviour
 
         if (landmarks.Landmark.Count > 12)
         {
-            var indexTip = landmarks.Landmark[8];
             var middleTip = landmarks.Landmark[12];
-            var index = new Vector2(indexTip.X, indexTip.Y);
             var middle = new Vector2(middleTip.X, middleTip.Y);
             var indexToMiddle = Vector2.Distance(index, middle);
             if (distance > indexToMiddle)
@@ -394,20 +381,6 @@ public class MediaPipeBodyTracker : MonoBehaviour
         }
 
         return true;
-    }
-
-    private float GetThumbIndexDistance(NormalizedLandmarkList landmarks)
-    {
-        if (landmarks == null || landmarks.Landmark.Count <= 8)
-        {
-            return 0f;
-        }
-
-        var thumbTip = landmarks.Landmark[4];
-        var indexTip = landmarks.Landmark[8];
-        var thumb = new Vector2(thumbTip.X, thumbTip.Y);
-        var index = new Vector2(indexTip.X, indexTip.Y);
-        return Vector2.Distance(thumb, index);
     }
 
     private void EnsureHandDots()
